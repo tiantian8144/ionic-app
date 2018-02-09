@@ -1,0 +1,120 @@
+WEBAPP Day03
+
+一、客户端，组件
+
+1. 用户注册页面和登录页面（Email/password）
+2. 在 HomePage 中添加用户登录表单
+    2.1 Email
+    2.2 Password
+    2.3 登录提交按钮
+
+3. 在 HomePage 中添加注册按钮
+
+4. 创建用户注册页面 SignUpPage
+    4.1 Email
+    4.2 Username
+    4.3 Password
+    4.4 Gender
+    4.5 Age
+    4.6 注册提交按钮
+
+5. HomePage 跳转到 SignUpPage
+
+6. 数据库、表的设计（db.user）
+
+7. Icon
+    7.1 创建页面 icon，HomePage 跳转到 IconPage
+    7.2 <ion-icon name="图表名"></ion-icon>
+    7.3 可以使用关于字体的任何样式
+    7.4 针对不用系统 <ion-icon ios="苹果图标名" md="安卓图标名"></ion-icon>、
+    7.5 属性绑定 [name]="name 的变量名"
+    7.6 http://www.iconfont.cn
+
+8. InfiniteScroll
+
+二、 搭建 Ionic 应用的服务器端
+
+9. 创建目录 server-demo
+10. 在 server-demo/ 下执行：npm init 生成 package.json
+11. 创建文件 server-demo/app.js
+12. Node.js 的模块
+    12.1 核心模块：http path fs global
+         直接引入 require 再使用
+    12.2 第三方模块：express mysql body-parser supervisor
+         下载安装，再引入，再使用
+    12.3 自定义模块
+         a. 文件模块
+         b. 目录模块
+13. 使用 express 创建一个简单的服务器端
+    13.1 server-demo/ 下执行 npm i -S express
+    13.2 编辑 app.js 文件，创建服务器
+    13.3 运行 app.js
+    13.4 浏览器访问服务器端
+
+14. 无网络：
+    14.1 解压缩 server-demo.zip
+    14.2 在 server-demo/ 创建文件 app.js
+    14.3 编辑 app.js 文件，创建服务器
+         const express = require('express');
+         let app = new express();
+         app.listen(3000);
+
+    14.4 运行 app.js
+         server-demo/ 执行 node app
+    14.5 浏览器访问服务器端
+         http://127.0.0.1:3000
+
+15. supervisor 可以实现服务器端热部署
+    15.1 执行 npm i -g supervisor
+    15.2 无网络：解压缩 supervisor.zip
+         a. supervisor 和 supervisor.cmd 文件放在
+            用户目录/AppData/Roming/npm/ 下
+         b. supervisor 目录放在
+            用户目录/AppData/Roming/npm/node_modules/ 下
+    15.3 关掉之前的服务，在 server-demo/ 下执行 supervisor app
+         再输入 rs
+
+16. EADDRINUSE:::3000 端口号占用问题
+    16.1 netstat -ano | findstr 端口号
+    16.2 taskkill /f /pid 进程 ID
+
+17. HTTP 请求的提交方式
+    17.1 GET (表单，默认) 不安全，字符串长度有限
+    17.2 POST (表单，method="post"，需要显式声明) 安全，信息大小不限
+    17.3 DELETE
+    17.4 PUT
+    17.5 ...
+
+18. 在服务器端 Express 获取请求信息
+    18.1 GET：req.query.key
+    18.2 POST: Express 需要配置 body-parser 中间件
+         a. 下载安装 body-parser 为项目的依赖，在 server-demo/ 执行 npm i -S body-parser
+         b. 在 server-demo/app.js，引入 body-parser，配置 body-parser
+         c. 获取 post 请求信息：req.body.key
+
+
+19. Ionic App 客户端，获取用户在表单填写的信息
+    19.1 在控制器 sign-up.ts 中定义一个 user={xxx:'',...} 对象
+    19.2 在表单页面做数据双向绑定(two way binding) [(ngModel)]="user.xxx" {{user.xxx}}
+    19.3 在控制器里获取用户填写的表单信息
+
+20. Ionic App 客户端发送 HTTP 请求到服务器端
+    20.1 修改 app.module.ts 文件，加载 HttpClientModule 模块
+        a. import {HttpClientModule} from '@angular/common/http';
+        b. 在 imports 数组中添加 HttpClientModule
+    20.2 修改 sigin-up.ts 文件
+        a. import {HttpClient} from '@angular/common/http';
+        b. 把 HttpClient 依赖注入到构造器中 public httpClient: HttpClient
+        c. 使用 this.httpClient 发送 HTTP 各种请求
+           this.httpClient.post('/signUp', {k:'v'})
+                .subscribe(
+                    res => {
+                        // 请求成功回调...
+                    },
+                    err => {
+                        // 请求失败回调...
+                    }
+                );
+
+练习：完成用户注册请求的处理
+
